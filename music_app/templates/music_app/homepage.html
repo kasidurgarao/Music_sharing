@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Sharing - Homepage</title>
+</head>
+<body>
+    <h1>Welcome to Music Sharing</h1>
+    <h2>My Music Files</h2>
+    <ul>
+        {% for music_file in music_files %}
+            <li>
+                <strong>{{ music_file.title }}</strong><br>
+                Uploaded by: {{ music_file.uploader.email }}<br>
+                Visibility: {{ music_file.get_visibility_display }}
+                {% if music_file.visibility == 'protected' %}
+                    <br>
+                    Allowed Users:
+                    <ul>
+                        {% for allowed_user in music_file.allowed_emails.all %}
+                            <li>{{ allowed_user.email }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <br>
+                <a href="{{ music_file.file.url }}" download>Download</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'upload_music' %}">Upload Music</a><br>
+    <a href="{% url 'user_logout' %}">Logout</a>
+</body>
+</html>
